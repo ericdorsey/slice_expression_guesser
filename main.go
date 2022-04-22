@@ -53,6 +53,7 @@ func sliceExpr(length int) []int {
     return sliceToGuess
 }
 
+// formatAnswer converts a string to a slice of strings
 func formatAnswer(answer string) []string {
     var formatted []string
     for _, v := range answer {
@@ -61,6 +62,7 @@ func formatAnswer(answer string) []string {
     return formatted
 }
 
+// Compares two string slices to see if they're the same
 func compareStringSlices(a, b []string) bool {
     if len(a) != len(b) {
         return false
@@ -123,6 +125,7 @@ func main() {
         }
         */
         same := compareStringSlices(userFormattedAnswer, formattedAnswer)
+        //fmt.Printf("userFormattedAnswer was %v, formattedAnswer was %v\n", userFormattedAnswer, formattedAnswer)
         // Guess right
         if same {
             fmt.Printf("Nice!, you guessed %v correctly\n", answer)
@@ -137,8 +140,10 @@ func main() {
             fmt.Println(s)
             fmt.Printf(promptString) 
             fmt.Scanln(&userInput) 
-            fmt.Printf("userInput was %v\n", userInput)
+            userFormattedAnswer := formatAnswer(userInput)
+            //fmt.Printf("userInput was %v\n", userInput)
             same = compareStringSlices(userFormattedAnswer, formattedAnswer)
+            //fmt.Printf("userFormattedAnswer was %v, formattedAnswer was %v\n", userFormattedAnswer, formattedAnswer)
             if same {
                 fmt.Printf("Nice!, you guessed %v correctly\n", answer)
                 break

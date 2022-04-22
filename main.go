@@ -9,7 +9,6 @@ import (
 
 // randNum generates a random number between min and max
 func randNum(min int, max int) int {
-    //fmt.Printf("min is %v, max is %v\n", min, max)
     v := rand.Intn(max - min) + min
     return v
 }
@@ -23,11 +22,11 @@ func randSliceMaker() []int {
     return s
 }
 
+// sliceExpr() generates a random slice expression like [2:3], or [:3] or [2:]
 func sliceExpr(length int) []int {
     // Generate a percent
     p := randNum(1, 100)
     var sliceToGuess []int
-    //fmt.Printf("length inside sliceExpr is %v\n", length)
     switch {
         case p <= 20:
             leftOrRight := randNum(1, 2) 
@@ -42,9 +41,7 @@ func sliceExpr(length int) []int {
             }
         case p > 21:
             firstIndex := randNum(2, length)
-            //fmt.Printf("firstIndex is %v\n", firstIndex)
             zeroIndex := randNum(1, firstIndex)
-            //fmt.Printf("zeroIndex is %v\n", zeroIndex)
             sliceToGuess = append(sliceToGuess, zeroIndex)
             sliceToGuess = append(sliceToGuess, firstIndex)
             
@@ -81,39 +78,42 @@ func main() {
     rand.Seed(time.Now().UnixNano())
 
     for {
-        // do stuff forever
+        // Do stuff forever
         fmt.Printf("\nStarting again!\n")
         s := randSliceMaker()
         var answer []int
         var promptString string
         sliceToGuess := sliceExpr(len(s))
+
         switch {
             // [:num]
             case sliceToGuess[0] == 0:
                 rightSideNumber := sliceToGuess[1]
                 answer = s[:rightSideNumber]
-                promptString = fmt.Sprintf("What is the result of [:%d]\n", sliceToGuess[1])
+                //promptString = fmt.Sprintf("What is the result of [:%d]\n", sliceToGuess[1])
+                promptString = fmt.Sprintf("What is the result of [:%d]", sliceToGuess[1])
             // [num:]
             case sliceToGuess[1] == 0:
                 leftSideNumber := sliceToGuess[0]
                 answer = s[leftSideNumber:]
-                promptString = fmt.Sprintf("What is the result of [%d:]\n", sliceToGuess[0])
+                //promptString = fmt.Sprintf("What is the result of [%d:]\n", sliceToGuess[0])
+                promptString = fmt.Sprintf("What is the result of [%d:]", sliceToGuess[0])
             // [num:num]
             default:
                 answer = s[sliceToGuess[0]:sliceToGuess[1]]
-                promptString  = fmt.Sprintf("What is the result of [%d:%d]\n", sliceToGuess[0], sliceToGuess[1])
+               //promptString  = fmt.Sprintf("What is the result of [%d:%d]\n", sliceToGuess[0], sliceToGuess[1])
+                promptString  = fmt.Sprintf("What is the result of [%d:%d]", sliceToGuess[0], sliceToGuess[1])
         } 
 
-        //fmt.Println(answer)
         // Ask user for answer
         fmt.Println(s)
+        promptString += " (Use '?' to skip and see answer):\n"
         fmt.Printf(promptString)
         var formattedAnswer []string
-        //userFormattedAnswer = append(userFormattedAnswer, "[")
+
         for _, v := range answer {
             formattedAnswer = append(formattedAnswer, strconv.Itoa(v)) 
         }
-        //userFormattedAnswer = append(userFormattedAnswer, "]")
 
         //fmt.Println(userFormattedAnswer) 
         var userInput string
@@ -125,27 +125,26 @@ func main() {
         }
         */
         same := compareStringSlices(userFormattedAnswer, formattedAnswer)
-        //fmt.Printf("userFormattedAnswer was %v, formattedAnswer was %v\n", userFormattedAnswer, formattedAnswer)
-        // Guess right
+        // Guessed right
         if same {
-            fmt.Printf("Nice!, you guessed %v correctly\n", answer)
+            fmt.Printf("Nice! You guessed %v correctly!\n", answer)
         }
         // Guessed wrong
         for !same {
             if userInput == "?" {
                 fmt.Printf("Answer was %v\n", answer)
-                //fmt.Println("breaking out of inner")
                 break
             }
+            fmt.Printf("Hmm, that wasn't right. Try again?\n")
+            // Print the slice again
             fmt.Println(s)
             fmt.Printf(promptString) 
             fmt.Scanln(&userInput) 
             userFormattedAnswer := formatAnswer(userInput)
-            //fmt.Printf("userInput was %v\n", userInput)
             same = compareStringSlices(userFormattedAnswer, formattedAnswer)
-            //fmt.Printf("userFormattedAnswer was %v, formattedAnswer was %v\n", userFormattedAnswer, formattedAnswer)
+            // Guessed right
             if same {
-                fmt.Printf("Nice!, you guessed %v correctly\n", answer)
+                fmt.Printf("Nice! You guessed %v correctly!\n", answer)
                 break
             }
         }

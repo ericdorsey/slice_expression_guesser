@@ -7,6 +7,7 @@ import (
     "time"
 )
 
+// Provide a random seed so test slices and test randNums aren't the same every time
 func init() {
     rand.Seed(time.Now().UnixNano())
 }
@@ -68,5 +69,25 @@ func TestSliceExpr(t *testing.T) {
     }  
     if !correctFormat {
         t.Errorf("Expected one of [0:someNumber <= %d], [someNumber <= %d:0], [someNumber <= %d:someNumber <= %d] but got %v", length, length, length, length, s)
+    }
+}
+
+// TestConvertToIntSlice tests the convertTo IntSlice function
+func TestConvertToIntSlice(t *testing.T) {
+    s := "[5, 3, 2]"
+    intS := convertToIntSlice(s)
+    if intS[0] != 5 || intS[1] != 3 || intS[2] != 2 {
+    //if (intS[0] != 5) {
+        t.Errorf("Expected int slice [5, 3, 2] but got %v", intS)
+    }
+}
+
+// TestCompareIntSlices tests the compareIntSlices function
+func TestCompareIntSlices(t *testing.T) {
+    s1 := []int{2, 5, 9}
+    s2 := []int{2, 5, 9}
+    result := compareIntSlices(s1, s2)
+    if !result {
+        t.Errorf("Expected %v and %v to be the same, but comparison result was %v", s1, s1, result)
     }
 }

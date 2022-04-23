@@ -13,9 +13,9 @@ func randNum(min int, max int) int {
     return v
 }
 
-// randSliceMaker creates a random slice of range 3,12
-func randSliceMaker() []int {
-    length := randNum(3, 12)
+// randSliceMaker creates a random slice, length between minLength and maxLength
+func randSliceMaker(minLength, maxLength int) []int {
+    length := randNum(minLength, maxLength)
     var s []int
     for i := 1; i <= length; i ++ {
         s = append(s, randNum(0, 10))
@@ -27,7 +27,7 @@ func randSliceMaker() []int {
 func sliceExpr(length int) []int {
     // Generate a percent
     p := randNum(1, 100)
-    var sliceToGuess []int
+    var sliceExprToGuess []int
     switch {
         // One in five chance of slice expr being like [:num] or [num:]
         // We don't actually use the zero values, they're just place holders for
@@ -37,23 +37,23 @@ func sliceExpr(length int) []int {
             if leftOrRight == 1 {
                 // [:num]
                 // Append a zero placeholder then an actual number
-                sliceToGuess = append(sliceToGuess, 0) 
-                sliceToGuess = append(sliceToGuess, randNum(1, length))
+                sliceExprToGuess = append(sliceExprToGuess, 0) 
+                sliceExprToGuess = append(sliceExprToGuess, randNum(1, length))
             } else {
                 // [num:]
                 // Append an actual number then a zero placeholder
-                sliceToGuess = append(sliceToGuess, randNum(1, length))
-                sliceToGuess = append(sliceToGuess, 0) 
+                sliceExprToGuess = append(sliceExprToGuess, randNum(1, length))
+                sliceExprToGuess = append(sliceExprToGuess, 0) 
             }
         // Put an actual number on both sides of the : separator
         case p > 21:
             firstIndex := randNum(2, length)
             zeroIndex := randNum(1, firstIndex)
-            sliceToGuess = append(sliceToGuess, zeroIndex)
-            sliceToGuess = append(sliceToGuess, firstIndex)
+            sliceExprToGuess = append(sliceExprToGuess, zeroIndex)
+            sliceExprToGuess = append(sliceExprToGuess, firstIndex)
             
     }
-    return sliceToGuess
+    return sliceExprToGuess
 }
 
 // convertToIntSlice converts user answer, a string, to an int slice to match against answer
@@ -99,27 +99,27 @@ func main() {
         firstRun = false
 
         // Make a new random slice
-        s := randSliceMaker()
+        s := randSliceMaker(3, 12)
         var answer []int
         var promptString string
-        sliceToGuess := sliceExpr(len(s))
+        sliceExprToGuess := sliceExpr(len(s))
 
         // Handle the different slice expression types to generate the question and answer
         switch {
             // expr looks like [:num]
-            case sliceToGuess[0] == 0:
-                rightSideNumber := sliceToGuess[1]
+            case sliceExprToGuess[0] == 0:
+                rightSideNumber := sliceExprToGuess[1]
                 answer = s[:rightSideNumber]
-                promptString = fmt.Sprintf("What is the result of [:%d]", sliceToGuess[1])
+                promptString = fmt.Sprintf("What is the result of [:%d]", sliceExprToGuess[1])
             // expr looks like [num:]
-            case sliceToGuess[1] == 0:
-                leftSideNumber := sliceToGuess[0]
+            case sliceExprToGuess[1] == 0:
+                leftSideNumber := sliceExprToGuess[0]
                 answer = s[leftSideNumber:]
-                promptString = fmt.Sprintf("What is the result of [%d:]", sliceToGuess[0])
+                promptString = fmt.Sprintf("What is the result of [%d:]", sliceExprToGuess[0])
             // expr looks like [num:num]
             default:
-                answer = s[sliceToGuess[0]:sliceToGuess[1]]
-                promptString  = fmt.Sprintf("What is the result of [%d:%d]", sliceToGuess[0], sliceToGuess[1])
+                answer = s[sliceExprToGuess[0]:sliceExprToGuess[1]]
+                promptString  = fmt.Sprintf("What is the result of [%d:%d]", sliceExprToGuess[0], sliceExprToGuess[1])
         } 
 
         // Add a little spacing between attempts

@@ -4,9 +4,9 @@ A Go slice expression quiz game. Go slice expressions are explained in the docs 
 
 https://go.dev/ref/spec#Slice_expressions
 
-The quiz game helps get familiar with slice expresison syntax like [2:3], [:4], or [1:]
+The quiz game helps get familiar with Go slice expresison syntax like `[2:3]`, `[:4]`, or `[1:]`
 
-## Example Output
+# Example Output
 
 The game generates a random slice and a random slice expression, then asks you to guess it:
 
@@ -17,7 +17,7 @@ What is the result of [3:5] (Use '?' to skip [and see answer]):
 Nice! You guessed [8 0] correctly!
 ```
 
-Answers can just be a series of numbers typed in, representing whatever part of the slice is represented by the slice expression.
+Answers can just be a series of numbers typed in, representing whatever part of the slice (ie, whatever sub-slice) is represented by the slice expression.
 
 If you guess wrong it will prompt you to try again:
 

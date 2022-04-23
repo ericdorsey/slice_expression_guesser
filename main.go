@@ -130,6 +130,7 @@ func main() {
         // To hold answer user types in
         var userInput string
 
+        // Prompt this same question until user skips with ?, quits with q, or gets answer right
         for {
             fmt.Println(s)
             fmt.Printf(promptString) 

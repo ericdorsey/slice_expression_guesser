@@ -6,6 +6,10 @@ https://go.dev/ref/spec#Slice_expressions
 
 The quiz game helps get familiar with Go slice expresison syntax like `[2:3]`, `[:4]`, or `[1:]`
 
+## Slice Expressions; Inclusive vs Exclusive
+
+Thinking of slice expressions in terms of `[inclusive:exclusive]` is helpful. ie, the value of the index number before the `:` is included in the resultant sub-slice, the value of the index number after the `:` is excluded from the resultant sub-slice.
+
 # Example Output
 
 The game generates a random slice and a random slice expression, then asks you to guess it:

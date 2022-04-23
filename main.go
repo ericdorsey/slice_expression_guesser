@@ -53,7 +53,6 @@ func sliceExpr(length int) []int {
             sliceToGuess = append(sliceToGuess, firstIndex)
             
     }
-    //fmt.Printf("sliceToGuess inside sliceExpr() is %v\n", sliceToGuess)
     return sliceToGuess
 }
 
@@ -72,7 +71,7 @@ func convertToIntSlice(userAnswer string) []int {
     return formattedUserAnswer
 }
 
-// Compares two string slices to see if they're the same
+// Compares two int slices to see if they're the same
 func compareIntSlices(a, b []int) bool {
     if len(a) != len(b) {
         return false
@@ -91,12 +90,15 @@ func main() {
     rand.Seed(time.Now().UnixNano())
     firstRun := true
 
+    // Run the guessing game forever
     for {
-        // Run the guessing game forever
+        // Visual starting again cue if not first run
         if !firstRun {
             fmt.Printf("\nStarting again!\n")
         }
         firstRun = false
+
+        // Make a new random slice
         s := randSliceMaker()
         var answer []int
         var promptString string
@@ -120,8 +122,8 @@ func main() {
                 promptString  = fmt.Sprintf("What is the result of [%d:%d]", sliceToGuess[0], sliceToGuess[1])
         } 
 
+        // Add a little spacing between attempts
         if !firstRun {
-            // Add a little spacing between tries
             fmt.Println()
         }
 
@@ -134,10 +136,10 @@ func main() {
         var userInput string
         fmt.Scanln(&userInput)
 
-        // convert string answer to []int, dumping non ints along the way
+        // Convert user string answer to []int, dumping non ints along the way
         userFormattedAnswer := convertToIntSlice(userInput)
 
-        // check the answer
+        // Check the answer
         same := compareIntSlices(userFormattedAnswer, answer)
 
         // Guessed right
@@ -166,7 +168,7 @@ func main() {
                 break
             }
 
-            // check the answer
+            // Check the answer
             same := compareIntSlices(userFormattedAnswer, answer)
             // Guessed right
             if same {

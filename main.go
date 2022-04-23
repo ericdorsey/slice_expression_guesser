@@ -144,18 +144,27 @@ func main() {
         if same {
             fmt.Printf("Nice! You guessed %v correctly!\n", answer)
         }
-        // Guessed wrong
+        
+        // User entered ?, let's skip this one
+        if userInput == "?" {
+            fmt.Printf("Answer was %v\n", answer)
+            continue
+        }
+
+        // Guessed wrong, keep asking until correct or entered ? to skip
         for !same {
             fmt.Printf("Hmm, %v wasn't right. Try again:\n", userFormattedAnswer)
-            if userInput == "?" {
-                fmt.Printf("Answer was %v\n", answer)
-                break
-            }
             // Print the slice and prompt again
             fmt.Println(s)
             fmt.Printf(promptString) 
             fmt.Scanln(&userInput) 
             userFormattedAnswer = convertToIntSlice(userInput)
+
+            // User entered ?, let's skip this one
+            if userInput == "?" {
+                fmt.Printf("Answer was %v\n", answer)
+                break
+            }
 
             // check the answer
             same := compareIntSlices(userFormattedAnswer, answer)

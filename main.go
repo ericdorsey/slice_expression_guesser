@@ -5,6 +5,8 @@ import (
     "math/rand"
     "time"
     "strconv"
+    "os"
+    "strings"
 )
 
 // randNum generates a random number between min and max
@@ -122,58 +124,42 @@ func main() {
                 promptString  = fmt.Sprintf("What is the result of [%d:%d]", sliceExprToGuess[0], sliceExprToGuess[1])
         } 
 
-        // Add a little spacing between attempts
-        if !firstRun {
-            fmt.Println()
-        }
+        // Add helfpul user options to prompt
+        promptString += " (?=skip [and see answer], q=quit):\n"
 
-        // Print the slice and ask user for answer
-        fmt.Println(s)
-        promptString += " (Use '?' to skip [and see answer]):\n"
-        fmt.Printf(promptString)
-    
-        // var to hold user answer
+        // To hold answer user types in
         var userInput string
-        fmt.Scanln(&userInput)
 
-        // Convert user string answer to []int, dumping non ints along the way
-        userFormattedAnswer := convertToIntSlice(userInput)
-
-        // Check the answer
-        same := compareIntSlices(userFormattedAnswer, answer)
-
-        // Guessed right
-        if same {
-            fmt.Printf("Nice! You guessed %v correctly!\n", answer)
-        }
-        
-        // User entered ?, let's skip this one
-        if userInput == "?" {
-            fmt.Printf("Answer was %v\n", answer)
-            continue
-        }
-
-        // Guessed wrong, keep asking until correct or entered ? to skip
-        for !same {
-            fmt.Printf("Hmm, %v wasn't right. Try again:\n", userFormattedAnswer)
-            // Print the slice and prompt again
+        for {
             fmt.Println(s)
             fmt.Printf(promptString) 
             fmt.Scanln(&userInput) 
-            userFormattedAnswer = convertToIntSlice(userInput)
+            userFormattedAnswer := convertToIntSlice(userInput)
 
+            // User wants to quit
+            if strings.HasPrefix(strings.ToLower(userInput), "q") {
+                fmt.Printf("Quitting.\n")
+                os.Exit(0)
+            }
             // User entered ?, let's skip this one
             if userInput == "?" {
                 fmt.Printf("Answer was %v\n", answer)
+                // Break out to outer loop to get next question
                 break
             }
 
             // Check the answer
             same := compareIntSlices(userFormattedAnswer, answer)
+
             // Guessed right
             if same {
                 fmt.Printf("Nice! You guessed %v correctly!\n", answer)
+                // Break out to outer loop to get next question
                 break
+            }
+            // Guessed wrong
+            if !same {
+                fmt.Printf("Hmm, %v wasn't right. Try again:\n", userFormattedAnswer) 
             }
         }
     }

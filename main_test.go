@@ -72,6 +72,23 @@ func TestSliceExpr(t *testing.T) {
     }
 }
 
+// TestSliceExprSeries tests a large series of sliceExpr outputs
+func TestSliceExprSeries(t *testing.T) {
+    numToGenerate := 10000
+    allValid := true
+    for i:= 0; i <= numToGenerate; i ++ {
+        generatedSliceExpr := sliceExpr(12)
+        if len(generatedSliceExpr) != 2 {
+            t.Errorf("Expected all generated test slices to be of length 2, but this generated slice %v's length was %d", generatedSliceExpr, len(generatedSliceExpr))
+            // One failed, so no longer all valid
+            allValid = false
+        }
+    }
+    if allValid {
+        fmt.Printf("all %d generated slice expressions were valid.\n", numToGenerate)
+    }
+}
+
 // TestConvertToIntSlice tests the convertTo IntSlice function
 func TestConvertToIntSlice(t *testing.T) {
     s := "[5, 3, 2]"

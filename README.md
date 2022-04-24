@@ -15,10 +15,10 @@ Thinking of slice expressions in terms of `[inclusive:exclusive]` is helpful. ie
 The game generates a random slice and a random slice expression, then asks you to guess it:
 
 ```
-[9 4 7 8 0 4 1]
-What is the result of [3:5] (Use '?' to skip [and see answer]):
-80
-Nice! You guessed [8 0] correctly!
+[2 0 5 2 8 5 0 0 8 9]
+What is the result of [2:9] (?=skip [and see answer], q=quit):
+5285008
+Nice! You guessed [5 2 8 5 0 0 8] correctly!
 ```
 
 Answers can just be a series of numbers typed in, representing whatever part of the slice (ie, whatever sub-slice) is represented by the slice expression.
@@ -26,29 +26,31 @@ Answers can just be a series of numbers typed in, representing whatever part of 
 If you guess wrong it will prompt you to try again:
 
 ```
-Starting again!
-
-[0 1 4 7 9 7 4 2 1 0]
-What is the result of [3:4] (Use '?' to skip [and see answer]):
-79
-Hmm, [7 9] wasn't right. Try again:
-[0 1 4 7 9 7 4 2 1 0]
+[8 0 9 3]
+What is the result of [1:3] (?=skip [and see answer], q=quit):
+093
+Hmm, [0 9 3] wasn't right. Try again:
+[8 0 9 3]
+What is the result of [1:3] (?=skip [and see answer], q=quit):
+09
+Nice! You guessed [0 9] correctly!
 ```
 
-Entering `?` as the answer will skip the current question, display the answer, then generate a new question.
+Entering `?` as the answer will skip the current question, display the answer, then generate a new question:
 
 ```
-What is the result of [3:4] (Use '?' to skip [and see answer]):
+[8 0 6 3 7 9 8 6 4 9]
+What is the result of [5:9] (?=skip [and see answer], q=quit):
 ?
-Answer was [7]
+Answer was [9 8 6 4]
 ```
 
-Quit with `CTRL + C`:
+Quit with `q`; final count of correct, incorect and skipped answers is displayed:
 
 ```
-Starting again!
-
-[1 1 4]
-What is the result of [1:2] (Use '?' to skip [and see answer]):
-^Csignal: interrupt
+[2 4 2 0 7 6 8 1]
+What is the result of [3:5] (?=skip [and see answer], q=quit):
+q
+Final score -- correct 2, incorrect 1, skipped 1
+Quitting.
 ```

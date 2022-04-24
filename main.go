@@ -48,13 +48,14 @@ func sliceExpr(length int) []int {
                 sliceExprToGuess = append(sliceExprToGuess, 0) 
             }
         // Put an actual number on both sides of the : separator
-        case p > 21:
+        case p >= 21:
             firstIndex := randNum(2, length)
             zeroIndex := randNum(1, firstIndex)
             sliceExprToGuess = append(sliceExprToGuess, zeroIndex)
             sliceExprToGuess = append(sliceExprToGuess, firstIndex)
             
     }
+    //fmt.Printf("arg length was %d len(sliceExprToGuess) %d, sliceExprToGuess %v\n", length, len(sliceExprToGuess), sliceExprToGuess)
     return sliceExprToGuess
 }
 
@@ -91,6 +92,11 @@ func main() {
     // Provide a random seed
     rand.Seed(time.Now().UnixNano())
     firstRun := true
+
+    // vars to track results
+    correct := 0
+    incorrect := 0
+    skipped := 0
 
     // Run the guessing game forever
     for {
@@ -131,7 +137,12 @@ func main() {
         var userInput string
 
         // Prompt this same question until user skips with ?, quits with q, or gets answer right
+    
+        // Track if already guessed wrong once
+        incorrectOnce := false
+
         for {
+
             fmt.Println(s)
             fmt.Printf(promptString) 
             fmt.Scanln(&userInput) 
@@ -139,12 +150,16 @@ func main() {
 
             // User wants to quit
             if strings.HasPrefix(strings.ToLower(userInput), "q") {
+                fmt.Printf("Final score -- correct %d, incorrect %d, skipped %d\n", correct, incorrect, skipped)
                 fmt.Printf("Quitting.\n")
                 os.Exit(0)
             }
             // User entered ?, let's skip this one
             if userInput == "?" {
-                fmt.Printf("Answer was %v\n", answer)
+                fmt.Printf("Skipping; answer was %v\n", answer)
+                if !incorrectOnce {
+                    skipped += 1
+                }
                 // Break out to outer loop to get next question
                 break
             }
@@ -154,12 +169,21 @@ func main() {
 
             // Guessed right
             if same {
-                fmt.Printf("Nice! You guessed %v correctly!\n", answer)
+                if !incorrectOnce {
+                    correct += 1
+                    fmt.Printf("Nice! You guessed %v correctly!\n", answer)
+                } else {
+                    fmt.Printf("Nice! You guessed %v correctly! (doesn't count towards correct score since you guessed wrong once)\n", answer)
+                }
                 // Break out to outer loop to get next question
                 break
             }
             // Guessed wrong
             if !same {
+                if !incorrectOnce {
+                    incorrect += 1
+                }
+                incorrectOnce = true
                 fmt.Printf("Hmm, %v wasn't right. Try again:\n", userFormattedAnswer) 
             }
         }

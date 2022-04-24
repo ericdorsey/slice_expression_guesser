@@ -55,7 +55,6 @@ func sliceExpr(length int) []int {
             sliceExprToGuess = append(sliceExprToGuess, firstIndex)
             
     }
-    //fmt.Printf("arg length was %d len(sliceExprToGuess) %d, sliceExprToGuess %v\n", length, len(sliceExprToGuess), sliceExprToGuess)
     return sliceExprToGuess
 }
 
